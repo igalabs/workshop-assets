@@ -1,0 +1,21 @@
+name: Native scheduler delivery check
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    branches: [main]
+    paths: [.github/workflows/schedule-check.yml]
+  workflow_dispatch:
+permissions: {}
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Record scheduled delivery
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          date -u
+          echo "event=$EVENT_NAME schedule=$SCHEDULE"
